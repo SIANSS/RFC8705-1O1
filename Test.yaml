@@ -1,0 +1,68 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: KYC
+servers:
+  - url: 'https://callback.testdollar.app'
+paths:
+  /onboard/kyc:
+      post:
+        description: Screened details about onboarded indivitual or organisation
+        requestBody:
+            required: true
+            content:
+                application/javascript:
+                    schema:
+                        $ref: '#/components/schemas/KycResult'
+        responses:
+            '200':
+                description: Successfully updated KYC details.
+            '400':
+                $ref: '#/components/responses/400Error'
+          
+components:
+  schemas:
+    KycResult:
+      type: object
+      required:
+        - clientId
+        - district
+        - kycTier
+        - riskRating
+        - customerType
+        - occupation
+        - gender
+        - industryType
+      properties:
+        clientId:
+            type: string
+            minLength: 5
+            maxLength: 20
+        district:
+            type: string
+        kycTier:
+            type: integer
+            minimum: 1
+            maximum: 3
+        riskRating:
+          type: string
+        customerType:
+          type: string
+        occupation:
+          type: string
+        gender:
+          type: string
+        industryType:
+          type: string
+    400Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+  
